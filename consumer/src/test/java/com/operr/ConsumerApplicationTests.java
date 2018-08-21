@@ -1,4 +1,4 @@
-package com.operr.consumer;
+package com.operr;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
