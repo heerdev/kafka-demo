@@ -4,10 +4,12 @@ public class Driver {
     
     String driverName;
     String customerName;
+    String location;
     Boolean isHired;
 
-    public Driver(String driverName, String customerName, Boolean isHired) {
+    public Driver(String driverName, String customerName,String location, Boolean isHired) {
         this.driverName = driverName;
+        this.location=location;
         this.customerName = customerName;
         this.isHired = isHired;
     }
@@ -15,6 +17,13 @@ public class Driver {
 
     }
 
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
 
     public String getDriverName() {
         return driverName;
@@ -45,6 +54,7 @@ public class Driver {
         return "Driver{" +
                 "driverName='" + driverName + '\'' +
                 ", customerName='" + customerName + '\'' +
+                ", location='" + location + '\'' +
                 ", isHired=" + isHired +
                 '}';
     }

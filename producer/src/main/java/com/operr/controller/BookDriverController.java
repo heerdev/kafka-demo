@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -19,8 +20,9 @@ public class BookDriverController {
     String bookinReqTopic;
 
     @RequestMapping(value="/request-driver", method=RequestMethod.POST)
-    public void requestDriver(Driver driver){
-       driver.setCustomerName(driver.getCustomerName());
+    public void requestDriver(@RequestParam String location){
+        Driver driver= new Driver();
+       driver.setLocation(location);
         kafkaTemplate.send(bookinReqTopic, driver);
     }
 
