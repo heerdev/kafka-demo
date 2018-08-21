@@ -1,9 +1,14 @@
 package com.operr.entity;
 
-public class ReqMessage {
+public class BookingReqMessage {
 
     String locationName;
     String customerName;
+
+    public BookingReqMessage(String locationName, String customerName) {
+        this.locationName = locationName;
+        this.customerName = customerName;
+    }
 
     public String getLocationName() {
         return locationName;

@@ -1,7 +1,7 @@
 package com.operr.entity;
 
 
-public class BookingUpdateMessage {
+public class BookingReplyMessage {
 
     boolean isBookingConfirm;
 
