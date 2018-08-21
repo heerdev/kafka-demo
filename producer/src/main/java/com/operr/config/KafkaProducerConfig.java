@@ -1,7 +1,7 @@
 package com.operr.config;
 
 
-import com.operr.entity.BookingReqMessage;
+import com.operr.entity.Driver;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,7 +22,7 @@ public class KafkaProducerConfig {
 
 
     @Bean
-    public ProducerFactory<String, BookingReqMessage> producerFactory() {
+    public ProducerFactory<String, Driver> producerFactory() {
         Map<String, Object> configProps = new HashMap<>();
         configProps.put(
                 ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,
@@ -37,7 +37,7 @@ public class KafkaProducerConfig {
     }
 
     @Bean
-    public KafkaTemplate<String, BookingReqMessage> kafkaTemplate() {
+    public KafkaTemplate<String, Driver> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
 }

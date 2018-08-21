@@ -11,10 +11,6 @@ public class Driver {
         this.customerName = customerName;
         this.isHired = isHired;
     }
-    public Driver(){
-
-    }
-
 
     public String getDriverName() {
         return driverName;
