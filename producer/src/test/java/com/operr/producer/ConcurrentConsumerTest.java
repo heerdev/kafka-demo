@@ -1,5 +1,8 @@
 package com.operr.producer;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
+import java.util.Random;
 
 import com.operr.entity.Driver;
 import org.apache.kafka.clients.producer.Callback;
@@ -37,13 +40,12 @@ public class ConcurrentConsumerTest implements Runnable {
     @Override
     public void run() {
 
-           Driver driver=new Driver("driver1",null,"chicago",false);
-            producer.send(new ProducerRecord<String, Driver>("reqbooking",driver ), new Callback() {
+            producer.send(new ProducerRecord<String, Driver>("reqbooking", getCustomerReq() ), new Callback() {
                 public void onCompletion(RecordMetadata metadata, Exception e) {
                     if (e != null) {
                         e.printStackTrace();
                     }
-                    System.out.println("Sent:" + driver.toString() + ", Offset: " + metadata.offset());
+                    System.out.println("Sent:" + getCustomerReq().toString() + ", Offset: " + metadata.offset());
                 }
             });
             try {
@@ -55,6 +57,24 @@ public class ConcurrentConsumerTest implements Runnable {
         // closes producer
         producer.close();
 
+    }
+
+    private Driver getCustomerReq() {
+        List<Driver> customerRequestList= new ArrayList<>();
+        Random rn = new Random();
+        int diverNumber= rn.nextInt(5) + 1;
+        Driver driver1=new Driver("driver1",null,"chicago",false);
+        Driver driver2=new Driver("driver1",null,"tampa",false);
+        Driver driver3=new Driver("driver1",null,"chicago",false);
+        Driver driver4=new Driver("driver1",null,"california",false);
+        Driver driver5=new Driver("driver1",null,"chicago",false);
+
+        customerRequestList.add(driver1);
+        customerRequestList.add(driver2);
+        customerRequestList.add(driver3);
+        customerRequestList.add(driver4);
+        customerRequestList.add(driver5);
+        return customerRequestList.get(diverNumber);
     }
 
     public void start () {
@@ -76,9 +96,9 @@ public class ConcurrentConsumerTest implements Runnable {
 
         c1.start();
         c2.start();
-      /*  c3.start();
+        c3.start();
         c4.start();
-        c5.start();*/
+        c5.start();
 
     }
 
