@@ -1,34 +1,39 @@
 package com.operr.entity;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 public class DriverList {
 
     private static DriverList driverList= new DriverList();
-    List<Driver> drivers = new CopyOnWriteArrayList<>();
+
+    //List<Driver> drivers = new CopyOnWriteArrayList<>();
+    private Queue<Driver> drivers = new ConcurrentLinkedQueue<>();
     private DriverList() {
         drivers.add(new Driver("driver1",null,"california" ,false));
-        drivers.add(new Driver("driver2",null,"chicago" ,false));
-        drivers.add(new Driver("driver3",null,"tampa" ,false));
-        drivers.add(new Driver("driver4",null,"california" ,false));
-        drivers.add(new Driver("driver5",null,"california" ,false));
+        drivers.add(new Driver("driver2",null,"california" ,false));
+        drivers.add(new Driver("driver3",null,"chicago" ,false));
+        drivers.add(new Driver("driver4",null,"chicago" ,false));
+        drivers.add(new Driver("driver5",null,"chicago" ,false));
         drivers.add(new Driver("driver6",null,"tampa" ,false));
-        drivers.add(new Driver("driver6",null,"chicago" ,false));
-        drivers.add(new Driver("driver8",null,"chicago" ,false));
-        drivers.add(new Driver("driver9",null,"chicago" ,false));
-        drivers.add(new Driver("driver10",null,"chicago" ,false));
-
-
+        drivers.add(new Driver("driver7",null,"tampa" ,false));
+        drivers.add(new Driver("driver8",null,"california" ,false));
+        drivers.add(new Driver("driver10",null,"california" ,false));
     }
     public static DriverList getDriverList() {
         return driverList;
     }
 
     public Driver bookDriver(Driver driver){
-        boolean driverPresent= drivers.removeIf(s -> s.getLocation().equalsIgnoreCase(driver.getLocation()));
-        driver.setHired(driverPresent ? true:false);
-        System.out.println("DRIVERS REMAINING :" +drivers.size());
+
+        for(Driver removeDriver:drivers){
+            if(removeDriver.getLocation().equalsIgnoreCase(driver.getLocation())){
+                driver.setHired(true);
+                drivers.remove();
+                break;
+            }
+        }
+        System.out.println("DRIVERS REMAINING :  " +drivers.size() + " Current driver list :" + driverList.toString());
         return driver;
     }
 

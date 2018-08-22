@@ -36,8 +36,6 @@ public class ConcurrentConsumerTest implements Runnable {
 
     @Override
     public void run() {
-        System.out.println("Produces  messages");
-      // for (int i = 0; i < 5; i++) {
 
            Driver driver=new Driver("driver1",null,"chicago",false);
             producer.send(new ProducerRecord<String, Driver>("reqbooking",driver ), new Callback() {
@@ -54,12 +52,8 @@ public class ConcurrentConsumerTest implements Runnable {
                 e.printStackTrace();
             }
 
-       // }
-
         // closes producer
         producer.close();
-
-
 
     }
 
@@ -82,9 +76,9 @@ public class ConcurrentConsumerTest implements Runnable {
 
         c1.start();
         c2.start();
-        c3.start();
+      /*  c3.start();
         c4.start();
-        c5.start();
+        c5.start();*/
 
     }
 
