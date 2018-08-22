@@ -20,8 +20,9 @@ public class BookDriverController {
     String bookinReqTopic;
 
     @RequestMapping(value="/request-driver", method=RequestMethod.POST)
-    public void requestDriver(@RequestParam String location){
+    public void requestDriver(@RequestParam String location,@RequestParam String customerName){
         Driver driver= new Driver();
+        driver.setCustomerName(customerName);
        driver.setLocation(location);
         kafkaTemplate.send(bookinReqTopic, driver);
     }
