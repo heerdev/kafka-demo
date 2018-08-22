@@ -10,13 +10,18 @@ import org.apache.kafka.clients.producer.RecordMetadata;
 
 public class ConcurrentConsumerTest implements Runnable {
 
+    private Thread t;
+    private String consumerName;
+
     private final KafkaProducer<String, Driver> producer;
     private final String topic;
 
-    public ConcurrentConsumerTest(String brokers, String topic) {
+    public ConcurrentConsumerTest(String brokers, String topic, String consumerName) {
         Properties prop = createProducerConfig("localhost:7092");
         this.producer = new KafkaProducer<String, Driver>(prop);
         this.topic = topic;
+        this.consumerName=consumerName;
+
     }
 
     private static Properties createProducerConfig(String brokers) {
@@ -31,15 +36,16 @@ public class ConcurrentConsumerTest implements Runnable {
 
     @Override
     public void run() {
-        System.out.println("Produces 5 messages");
-        for (int i = 0; i < 5; i++) {
-            String msg = "Message " + i;
-            producer.send(new ProducerRecord<String, Driver>("reqbooking", new Driver("driver1",null,"tampa",false)), new Callback() {
+        System.out.println("Produces  messages");
+      // for (int i = 0; i < 5; i++) {
+
+           Driver driver=new Driver("driver1",null,"chicago",false);
+            producer.send(new ProducerRecord<String, Driver>("reqbooking",driver ), new Callback() {
                 public void onCompletion(RecordMetadata metadata, Exception e) {
                     if (e != null) {
                         e.printStackTrace();
                     }
-                    System.out.println("Sent:" + msg + ", Offset: " + metadata.offset());
+                    System.out.println("Sent:" + driver.toString() + ", Offset: " + metadata.offset());
                 }
             });
             try {
@@ -48,17 +54,38 @@ public class ConcurrentConsumerTest implements Runnable {
                 e.printStackTrace();
             }
 
-        }
+       // }
 
         // closes producer
         producer.close();
 
+
+
     }
 
+    public void start () {
+
+        System.out.println("Starting " +  consumerName );
+        if (t == null) {
+            t = new Thread (this, consumerName);
+            t.start ();
+        }
+    }
     public static void main(String[] args) {
 
-        ConcurrentConsumerTest concurrentConsumerTest= new ConcurrentConsumerTest("localhost:7092","reqbooking");
-        concurrentConsumerTest.run();
+        ConcurrentConsumerTest c1= new ConcurrentConsumerTest("localhost:7092","reqbooking","customer1");
+        ConcurrentConsumerTest c2= new ConcurrentConsumerTest("localhost:7092","reqbooking","customer2");
+        ConcurrentConsumerTest c3= new ConcurrentConsumerTest("localhost:7092","reqbooking","customer3");
+        ConcurrentConsumerTest c4= new ConcurrentConsumerTest("localhost:7092","reqbooking","customer4");
+        ConcurrentConsumerTest c5= new ConcurrentConsumerTest("localhost:7092","reqbooking","customer5");
+
+
+        c1.start();
+        c2.start();
+        c3.start();
+        c4.start();
+        c5.start();
+
     }
 
 
