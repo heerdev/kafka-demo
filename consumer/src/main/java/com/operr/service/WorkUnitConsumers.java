@@ -5,6 +5,9 @@ import com.operr.entity.DriverList;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.annotation.KafkaListener;
 
+import org.springframework.kafka.support.KafkaHeaders;
+import org.springframework.messaging.handler.annotation.Header;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Service;
 
@@ -21,8 +24,9 @@ public class WorkUnitConsumers {
 
     @KafkaListener(topics = "${request.topic.name}")
     @SendTo("replybooking")
-    public Driver listen(Driver driver) {
+    public Driver listen(@Payload Driver driver, @Header(KafkaHeaders.CORRELATION_ID) Integer key) {
         log.info("Received Messasge in group groud-id1: " + driver.toString());
+        log.info("CORRELATION_ID "+key );
         DriverList driverList= DriverList.getDriverList();
         driver=driverList.bookDriver(driver);
         return driver;

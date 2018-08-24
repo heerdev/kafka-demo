@@ -28,8 +28,9 @@ public class DriverList {
 
         for(Driver removeDriver:drivers){
             if(removeDriver.getLocation().equalsIgnoreCase(driver.getLocation())){
-                driver.setCustomerName(removeDriver.getDriverName());
+                driver.setCustomerName(removeDriver.getCustomerName());
                 driver.setHired(true);
+                driver.setDriverName(removeDriver.getDriverName());
                 drivers.remove();
                 break;
             }
