@@ -7,7 +7,6 @@ public class DriverList {
 
     private static DriverList driverList= new DriverList();
 
-    //List<Driver> drivers = new CopyOnWriteArrayList<>();
     private Queue<Driver> drivers = new ConcurrentLinkedQueue<>();
     private DriverList() {
         drivers.add(new Driver("driver1",null,"california" ,false));
@@ -25,18 +24,20 @@ public class DriverList {
     }
 
     public Driver bookDriver(Driver driver){
+        Driver bookedDriver= new Driver();
+        bookedDriver.setCustomerName(driver.getCustomerName());
+        bookedDriver.setLocation(driver.getLocation());
 
         for(Driver removeDriver:drivers){
             if(removeDriver.getLocation().equalsIgnoreCase(driver.getLocation())){
-                driver.setCustomerName(removeDriver.getCustomerName());
-                driver.setHired(true);
-                driver.setDriverName(removeDriver.getDriverName());
+                bookedDriver.setHired(true);
+                bookedDriver.setDriverName(removeDriver.getDriverName());
                 drivers.remove();
                 break;
             }
         }
         System.out.println("DRIVERS REMAINING :  " +drivers.size() + " Current driver list :" + drivers.toString());
-        return driver;
+        return bookedDriver;
     }
 
 }
